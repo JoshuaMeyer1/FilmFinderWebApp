@@ -4,3 +4,8 @@ Run app.py
 
 open in browser:
 http://127.0.0.1:8000
+
+
+
+or get vscode liveServer extension
+right-click index.html and click liveServer

@@ -1,10 +1,14 @@
 # app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from TestScript import get_row_by_index
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/')
+def home():
+    return send_from_directory('static', 'index.html')
 
 @app.route('/get-row', methods=['POST'])
 def get_row():
