@@ -30,6 +30,7 @@ def search_results():
 
 @app.route('/get-movie-details', methods=['POST'])
 def get_movie_details():
+    print("this ran")
     try:
         # Extract the index from the request's JSON payload
         data = request.get_json()
@@ -67,14 +68,20 @@ def get_simialar_movies():
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
         # Call the function from TestScript.py
-        movieDetails = get_metadata_title(movieTitle, df)
+        movieDetails
+        if (searchType == "plotSummary"):
+            movieDetails = find_similar_movies_by_summary(movieTitle, df)
+        if (searchType == "genre"):
+            movieDetails = find_similar_movies_by_genre(movieTitle, df)
+        if (searchType == "keywords"):
+            movieDetails = find_similar_movies_by_keywords(movieTitle, df)
 
         if not movieDetails:
             return jsonify({"error": "Movie not found"}), 404
         
 
-        print("returning movie")
-
+        print("returning movies")
+        print(movieDetails)
         # Return the movie details as JSON
         return jsonify(movieDetails)
         

@@ -43,8 +43,8 @@
                 <label for="searchType"><strong>Search Type</strong></label>
                 <select id="searchType">
                     <option value="plotSummary">Plot Summary</option>
-                    <option value="Genre">Genre</option>
-                    <option value="keyWords">Key Words</option>
+                    <option value="genre">Genre</option>
+                    <option value="keywords">Key Words</option>
                 </select>
             </div>
 
@@ -67,8 +67,8 @@
             </div>
 
 
-            <button type="button" id="findMovie" onclick="getMovieDetails()">Validate Title</button><!--validate()-->
-            <button type="button" id="searchBtn" onclick="showSearchResults()">Search</button>
+            <button type="button" id="findMovie" onclick="getMovieDetails()">Validate Title</button>
+            <button type="button" id="searchBtn" onclick="getSearchResults()">Search</button>
         </form>
 
     </div>
@@ -82,7 +82,7 @@
 
             try {
                 console.log('Sending request to Flask...');
-                const response = await fetch('/get-similar-movies', {
+                const response = await fetch('/get-movie-details', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -128,8 +128,7 @@
         }
 
         //Returns search results
-        async function showSearchResults() {
-           
+        async function getSearchResults() {
            const movieTitle = document.getElementById('title').value;
            const searchType = document.getElementById('searchType').value;
 
@@ -188,9 +187,9 @@
        }
 
         //Returns search results
-        async function showSearchResults() {
-            window.location.href = 'search_results.html';
-        }
+        //async function showSearchResults() {
+        //    window.location.href = 'search_results.html';
+        //}
     </script>
 </body>
 </html>
