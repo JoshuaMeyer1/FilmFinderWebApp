@@ -58,7 +58,7 @@
 
 
             <button type="button" id="findMovie" onclick="getMovieDetails()">Validate Title</button><!--validate()-->
-            <!--<button type="button" id="searchBtn" onclick="validate()">Search</button>-->
+            <button type="button" id="searchBtn" onclick="showSearchResults()">Search</button>
         </form>
     </div>
     <!--<script src="script.js"></script>-->
@@ -120,8 +120,9 @@
     }
 
     //Returns search results
-    async function getSearchResults() {
-
+    async function showSearchResults() {
+        // open search results page
+        window.location.href = 'search_results.html';
     }
     </script>
 
