@@ -1,5 +1,7 @@
 # app.py
 from flask import Flask, request, jsonify, send_from_directory
+
+import searchClusters
 from query_metadata import get_metadata_title
 from searchClusters import find_similar_movies_by_genre, find_similar_movies_by_summary, find_similar_movies_by_keywords
 from flask_cors import CORS
@@ -15,6 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/')
+@app.route('/index.html')
 def home():
     return send_from_directory(directory='./static', path='index.html')
 
@@ -47,7 +50,7 @@ def get_movie_details():
             return jsonify({"error": "Movie not found"}), 404
         
 
-        print("returning movie")
+        print(similar_movies)
 
         # Return the movie details as JSON
         return jsonify(movieDetails)
@@ -79,6 +82,15 @@ def get_simialar_movies():
         if not movieDetails:
             return jsonify({"error": "Movie not found"}), 404
         
+        match searchType:
+            case "plotSummary":
+                similar_movies = searchClusters.find_similar_movies_by_summary(movieTitle, df)
+            case "Genre":
+                similar_movies = searchClusters.find_similar_movies_by_genre(movieTitle, df)
+            case "keyWords":
+                similar_movies = searchClusters.find_similar_movies_by_keywords(movieTitle, df)
+            case _:
+                similar_movies = None
 
         print("returning movies")
         print(movieDetails)
@@ -87,6 +99,9 @@ def get_simialar_movies():
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def validate_movie_title(movieTitle: str):
+    print()
 
 if __name__ == '__main__':
     app.run(debug=True)
