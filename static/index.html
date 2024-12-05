@@ -6,14 +6,24 @@
     <title>FilmFinder</title>
     <link rel="stylesheet" href="/static/style.css">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
-      
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-    <!-- Toastr CSS -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />-->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
-    <!-- Toastr JS -->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>-->
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- Toastr js -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
+    <!-- Configure toastr options -->
+    <script>
+        toastr.options = {
+                  "positionClass": "toast-top-right", // Position of the toastr
+                  "timeOut": "7000", // Duration the toastr will be visible
+                  "closeButton": true, // Show close button
+                  "progressBar": false // Show progress bar
+              };
+    </script>
 
 </head>
 
@@ -61,71 +71,68 @@
             <button type="button" id="searchBtn" onclick="showSearchResults()">Search</button>
         </form>
     </div>
-    <!--<script src="script.js"></script>-->
-</body>
-
-<script>
-
+    
+    <script>
         //Returns movie details for the queried movie
-    async function getMovieDetails() {
-        const movieTitle = document.getElementById('title').value;
-        const payload = { movieTitle };
-        console.log("fetching movie details...");
+        async function getMovieDetails() {
+            const movieTitle = document.getElementById('title').value;
+            const payload = { movieTitle };
+            console.log("fetching movie details...");
 
-        try {
-            console.log('Sending request to Flask...');
-            const response = await fetch('http://127.0.0.1:5000/get-movie-details', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
+            try {
+                console.log('Sending request to Flask...');
+                const response = await fetch('http://127.0.0.1:5000/get-movie-details', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
 
-            // Check if the response is OK
-            if (!response.ok) {
-                //toastr.error('Network response error', 'Error');
-                throw new Error('Network response was not ok');
-            }
+                // Check if the response is OK
+                if (!response.ok) {
+                    toastr.error('Invalid query', 'Error');
+                    throw new Error('Network response was not ok');
+                }
 
-            const data = await response.json();
-            console.log('Response from Flask:', data);
+                const data = await response.json();
+                console.log('Response from Flask:', data);
 
-            // Render the data in the HTML
-            const plotSummary = document.getElementById('plotSummaryDisp');
-            const genres = document.getElementById('genresDisp');
-            const keyWords = document.getElementById('keyWordsDisp');
+                // Render the data in the HTML
+                const plotSummary = document.getElementById('plotSummaryDisp');
+                const genres = document.getElementById('genresDisp');
+                const keyWords = document.getElementById('keyWordsDisp');
 
 
-            if (data.error) {
-                //toastr.error('Issue with retrieved data', 'Error');
-                //THIS SHOULD CAUSE A TOASTR
-                console.log("error with the data");
-            } else {
-                //toastr.success('Movie data retrieved successfully!', 'Success');
+                if (data.error) {
+                    toastr.error('Issue with retrieved data', 'Error');
+                    //THIS SHOULD CAUSE A TOASTR
+                    console.log("error with the data");
+                } else {
+                    toastr.success('Movie data retrieved!', 'Success');
 
-                const strSummary = JSON.stringify(data.summary, null, 2);
-                const strGenre = JSON.stringify(data.genres, null, 2);
-                const strKeywords = JSON.stringify(data.keywords, null, 2);
+                    const strSummary = JSON.stringify(data.summary, null, 2);
+                    const strGenre = JSON.stringify(data.genres, null, 2);
+                    const strKeywords = JSON.stringify(data.keywords, null, 2);
 
-                plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
-                genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
-                keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('result').textContent =
-                'An error occurred while fetching the data.';
-        };
-    }
+                    plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
+                    genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
+                    keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').textContent =
+                    'An error occurred while fetching the data.';
+            };
+        }
 
-    //Returns search results
-    async function showSearchResults() {
-        // open search results page
-        window.location.href = 'search_results.html';
-    }
+        //Returns search results
+        async function getSearchResults() {
+
+        }
+
     </script>
-
+</body>
 </html>
 
 
