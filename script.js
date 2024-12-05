@@ -1,3 +1,37 @@
+// Get modal element
+var modal = document.getElementById("popupModal");
+
+// Get open button
+var openModalBtn = document.getElementById("openModalBtn");
+
+// Get close button
+var closeModalBtn = document.getElementById("closeModalBtn");
+
+// Open modal when the button is clicked
+openModalBtn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// Close modal when the user clicks the "x"
+closeModalBtn.onclick = function() {
+  modal.style.display = "none";
+}
+
+// Close modal if the user clicks anywhere outside of the modal
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+
+
+
+
+
+
+
 /*@Author Shreeya Chugh*/
 
 function validate() {
