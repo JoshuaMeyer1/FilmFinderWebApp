@@ -4,6 +4,7 @@ from TestScript import get_row_by_index
 from query_metadata import get_metadata_title
 from flask_cors import CORS
 import pandas as pd
+import json
 
 #data frame used for method calls
 df = pd.read_csv('movieData.csv')
@@ -54,14 +55,11 @@ def get_movie_details():
             return jsonify({"error": "Movie not found"}), 404
         
         # Return the movie details as JSON
-        return jsonify({
-            "plotSummary": movie_details["plotSummary"],
-            "keywords": movie_details["keywords"],
-            "genre": movie_details["genre"]
-        }), 200
+        return json.dumps(movieDetails)
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
+    #app.run(debug=True, host='0.0.0.0')
