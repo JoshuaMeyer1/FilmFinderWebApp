@@ -31,7 +31,7 @@
     <div class="container">
         <h1 id="filmfinder" style="color:#653239">FilmFinder</h1>
 
-        <form>
+        <form onsubmit="getSearchResults()">
             <h3> Query </h3>
             <div>
                 <label for="title"><strong>Title:</strong></label>
@@ -41,8 +41,8 @@
 
             <div>
                 <label for="searchType"><strong>Search Type</strong></label>
-                <select id="searchFilter">
-                    <option value="plotSummary">Plot Summary</option>
+                <select id="searchType">
+                    <option value="plotSummary" selected="selected">Plot Summary</option>
                     <option value="genre">Genre</option>
                     <option value="keywords">Key Words</option>
                 </select>
@@ -124,72 +124,14 @@
                 console.error('Error:', error);
                 document.getElementById('result').textContent =
                     'An error occurred while fetching the data.';
-            };
+            }
         }
 
-        //Returns search results
-        async function getSearchResults() {
-           const movieTitle = document.getElementById('title').value;
-           const searchType = document.getElementById('searchType').value;
-
-           const payload = { movieTitle, searchType };
-           console.log("fetching movie details...");
-
-           try {
-               console.log('Sending request to Flask...');
-               const response = await fetch('/get-related-movies', {
-                   method: 'POST',
-                   headers: {
-                       'Content-Type': 'application/json',
-                   },
-                   body: JSON.stringify(payload),
-               });
-
-               // Check if the response is OK
-               if (!response.ok) {
-                   toastr.error('Invalid query', 'Error');
-                   throw new Error('Network response was not ok');
-               }
-
-               const data = await response.json();
-               console.log('Response from Flask:', data);
-
-               // Render the data in the HTML
-
-
-
-
-               const plotSummary = document.getElementById('plotSummaryDisp');
-               const genres = document.getElementById('genresDisp');
-               const keyWords = document.getElementById('keyWordsDisp');
-
-
-               if (data.error) {
-                   toastr.error('Issue with retrieved data', 'Error');
-                   //THIS SHOULD CAUSE A TOASTR
-                   console.log("error with the data");
-               } else {
-                   toastr.success('Movie data retrieved!', 'Success');
-
-                   const strSummary = JSON.stringify(data.summary, null, 2);
-                   const strGenre = JSON.stringify(data.genres, null, 2);
-                   const strKeywords = JSON.stringify(data.keywords, null, 2);
-
-                   plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
-                   genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
-                   keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
-               }
-           } catch (error) {
-               console.error('Error:', error);
-               document.getElementById('result').textContent =
-                   'An error occurred while fetching the data.';
-           };
-       }
-
-        //Returns search results
-        //async function showSearchResults() {
-        //    window.location.href = 'search_results.html';
-        //}
+        function getSearchResults() {
+            const title = document.getElementById('title').value
+            const searchType = document.getElementById('searchType').value
+            window.location.href = `search_results.html?title=${title}&searchType=${searchType}`
+        }
     </script>
 </body>
 </html>
