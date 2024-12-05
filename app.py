@@ -4,6 +4,7 @@ from query_metadata import get_metadata_title
 from searchClusters import find_similar_movies_by_genre, find_similar_movies_by_summary, find_similar_movies_by_keywords
 from flask_cors import CORS
 import pandas as pd
+import warnings
 import json
 
 #data frame used for method calls
