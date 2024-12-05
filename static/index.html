@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FilmFinder</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <!-- Toastr CSS -->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />-->
+
+    <!-- Toastr JS -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>-->
+
 </head>
 
 <body>
@@ -55,6 +65,7 @@
 </body>
 
 <script>
+
         //Returns movie details for the queried movie
     async function getMovieDetails() {
         const movieTitle = document.getElementById('title').value;
@@ -73,6 +84,7 @@
 
             // Check if the response is OK
             if (!response.ok) {
+                //toastr.error('Network response error', 'Error');
                 throw new Error('Network response was not ok');
             }
 
@@ -86,12 +98,19 @@
 
 
             if (data.error) {
+                //toastr.error('Issue with retrieved data', 'Error');
                 //THIS SHOULD CAUSE A TOASTR
                 console.log("error with the data");
             } else {
-                plotSummary.textContent = `${JSON.stringify(data.summary, null, 2)}`;
-                genres.textContent = `${JSON.stringify(data.genres, null, 2)}`;
-                keyWords.textContent = `${JSON.stringify(data.keywords, null, 2)}`;
+                //toastr.success('Movie data retrieved successfully!', 'Success');
+
+                const strSummary = JSON.stringify(data.summary, null, 2);
+                const strGenre = JSON.stringify(data.genres, null, 2);
+                const strKeywords = JSON.stringify(data.keywords, null, 2);
+
+                plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
+                genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
+                keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
             }
         } catch (error) {
             console.error('Error:', error);
@@ -109,96 +128,4 @@
 </html>
 
 
-<!--
-    async function getRowData() {
-        const index = document.getElementById('title').value;
-        const payload = { index: parseInt(index) };
-        console.log("testing...");
 
-        try {
-            console.log('Sending request to Flask...');
-            const response = await fetch('http://127.0.0.1:5000/get-row', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            // Check if the response is OK
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log('Response from Flask:', data);
-
-            // Render the data in the HTML
-            const resultElement = document.getElementById('keyWordsDisp');
-            //const resultElement = document.getElementById('result');
-            if (data.error) {
-                resultElement.textContent = `<p>Error: ${data.error}</p>`;
-            } else {
-                resultElement.textContent = `${JSON.stringify(data, null, 2)}`;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('keyWordsDisp').textContent =
-                'Could not retrieve details';
-        }
-    }
-
-
-
-<body>
-    <h1>Flask & JavaScript Interaction</h1>
-
-    <label for="indexInput">Enter Row Index:</label>
-    <input type="number" id="indexInput" placeholder="Enter index" />
-    <button onclick="getRowData()">Get Row</button>
-
-    <h3>Result:</h3>
-    <div id="result"></div>
-
-    <script>
-    async function getRowData() {
-
-        const index = document.getElementById('indexInput').value;
-        const payload = { index: parseInt(index) };
-        console.log("testing...");
-
-        try {
-            console.log('Sending request to Flask...');
-            const response = await fetch('http://127.0.0.1:5000/get-row', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            // Check if the response is OK
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log('Response from Flask:', data);
-
-            // Render the data in the HTML
-            const resultElement = document.getElementById('result');
-            if (data.error) {
-                resultElement.innerHTML = `<p>Error: ${data.error}</p>`;
-            } else {
-                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('result').textContent =
-                'An error occurred while fetching the data.';
-        }
-    }
-    </script>
-</body>
-</html>
--->

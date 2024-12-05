@@ -9,8 +9,12 @@ color: #000;
 padding: 20px;
 }
 
-textarea::placeholder {
+textarea {
 font-family: Arial, sans-serif;
+}
+
+textarea {
+    resize: vertical;
 }
 
 form {
