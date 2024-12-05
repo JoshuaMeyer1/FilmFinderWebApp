@@ -27,5 +27,32 @@ def get_row():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/get_movie_details', methods=['POST'])
+def get_movie_details():
+    try:
+        # Extract the index from the request's JSON payload
+        data = request.get_json()
+        movieTitle = data.get('movieTitle')
+
+        # Validate the movie title
+        if not movieTitle or not isinstance(movieTitle, str):
+            return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
+
+        # Call the function from TestScript.py
+        movieDetails = get_details_from_title(movieTitle)
+
+        if not movieDetails:
+            return jsonify({"error": "Movie not found"}), 404
+        
+        # Return the movie details as JSON
+        return jsonify({
+            "plotSummary": movie_details["plotSummary"],
+            "keywords": movie_details["keywords"],
+            "genre": movie_details["genre"]
+        }), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)

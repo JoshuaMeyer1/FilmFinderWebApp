@@ -20,7 +20,7 @@
             </div>
 
             <div>
-                <label for="searchType"><strong>SearchType</strong></label>
+                <label for="searchType"><strong>Search Type</strong></label>
                 <select id="genreFilter">
                     <option value="plotSummary">Plot Summary</option>
                     <option value="Genre">Genre</option>
@@ -47,10 +47,8 @@
             </div>
 
 
-            <button type="button" onclick="validate()">Validate Title</button>
-            <button type="button" id = onclick="validate()">Search</button>
-
-
+            <button type="button" id="findMovie" onclick="getRowData()">Validate Title</button><!--validate()-->
+            <button type="button" id="searchBtn" onclick="validate()">Search</button>
         </form>
     </div>
     <script src="script.js"></script>
@@ -58,14 +56,10 @@
 
 <script>
 
-    //Returns movie details for the queried movie
-    async function getMoveDetails() {
 
-    }
 
     async function getRowData() {
-
-        const index = document.getElementById('indexInput').value;
+        const index = document.getElementById('title').value;
         const payload = { index: parseInt(index) };
         console.log("testing...");
 
@@ -88,17 +82,61 @@
             console.log('Response from Flask:', data);
 
             // Render the data in the HTML
+            const resultElement = document.getElementById('keyWordsDisp');
+            //const resultElement = document.getElementById('result');
+            if (data.error) {
+                resultElement.textContent = `<p>Error: ${data.error}</p>`;
+            } else {
+                resultElement.textContent = `${JSON.stringify(data, null, 2)}`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('keyWordsDisp').textContent =
+                'Could not retrieve details';
+        }
+    }
+
+        //Returns movie details for the queried movie
+    async function getMovieDetails() {
+        const movieTitle = document.getElementById('title').value;
+        const payload = { movieTitle };
+        console.log("fetching movie details...");
+
+        try {
+            console.log('Sending request to Flask...');
+            const response = await fetch('http://127.0.0.1:5000/get-movie-details', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            // Check if the response is OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Response from Flask:', data);
+
+            // Render the data in the HTML
             const resultElement = document.getElementById('result');
             if (data.error) {
                 resultElement.innerHTML = `<p>Error: ${data.error}</p>`;
             } else {
-                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                resultElement.innerHTML = `${JSON.stringify(data, null, 2)}`;
             }
         } catch (error) {
             console.error('Error:', error);
             document.getElementById('result').textContent =
                 'An error occurred while fetching the data.';
-        }
+        };
+    }
+
+    //Returns search results
+    async function getSearchResults() {
+
     }
     </script>
 
