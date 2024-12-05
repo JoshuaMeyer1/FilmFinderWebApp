@@ -1,7 +1,5 @@
 # app.py
 from flask import Flask, request, jsonify, send_from_directory
-
-import searchClusters
 from query_metadata import get_metadata_title
 from searchClusters import find_similar_movies_by_genre, find_similar_movies_by_summary, find_similar_movies_by_keywords
 from flask_cors import CORS
@@ -17,7 +15,6 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/')
-@app.route('/index.html')
 def home():
     return send_from_directory(directory='./static', path='index.html')
 
@@ -50,7 +47,7 @@ def get_movie_details():
             return jsonify({"error": "Movie not found"}), 404
         
 
-        print(similar_movies)
+        print("returning movie")
 
         # Return the movie details as JSON
         return jsonify(movieDetails)
@@ -58,8 +55,9 @@ def get_movie_details():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/get-similar-movies', methods=['POST'])
-def get_simialar_movies():
+@app.route('/get-related-movies', methods=['POST'])
+def get_related_movies():
+
     try:
         # Extract the query details from the request's JSON payload
         data = request.get_json()
@@ -70,8 +68,8 @@ def get_simialar_movies():
         if not movieTitle or not isinstance(movieTitle, str):
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
+        movieDetails = None
         # Call the function from TestScript.py
-        movieDetails
         if (searchType == "plotSummary"):
             movieDetails = find_similar_movies_by_summary(movieTitle, df)
         if (searchType == "genre"):
@@ -79,29 +77,18 @@ def get_simialar_movies():
         if (searchType == "keywords"):
             movieDetails = find_similar_movies_by_keywords(movieTitle, df)
 
-        if not movieDetails:
+        print("Made it here!!!")
+        print(movieDetails)
+
+        if movieDetails is None:
             return jsonify({"error": "Movie not found"}), 404
         
-        match searchType:
-            case "plotSummary":
-                similar_movies = searchClusters.find_similar_movies_by_summary(movieTitle, df)
-            case "Genre":
-                similar_movies = searchClusters.find_similar_movies_by_genre(movieTitle, df)
-            case "keyWords":
-                similar_movies = searchClusters.find_similar_movies_by_keywords(movieTitle, df)
-            case _:
-                similar_movies = None
-
-        print("returning movies")
-        print(movieDetails)
+        movieDetails = movieDetails.to_dict(orient="records")
         # Return the movie details as JSON
-        return jsonify(movieDetails)
+        return jsonify({"status": "success", "data": movieDetails})
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-def validate_movie_title(movieTitle: str):
-    print()
 
 if __name__ == '__main__':
     app.run(debug=True)
