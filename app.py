@@ -2,13 +2,18 @@
 from flask import Flask, request, jsonify, send_from_directory
 from TestScript import get_row_by_index
 from flask_cors import CORS
+import pandas as pd
+
+
+df = pd.DataFrame()
+df = pd.read_csv('modern_feature_films.csv')
 
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/')
 def home():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory(directory='./static', path='index.html')
 
 @app.route('/get-row', methods=['POST'])
 def get_row():
@@ -55,4 +60,4 @@ def get_movie_details():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
