@@ -13,7 +13,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory(directory='./static', path='index.html')
 
 @app.route('/get-row', methods=['POST'])
 def get_row():
@@ -33,4 +33,4 @@ def get_row():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
