@@ -116,9 +116,9 @@
                     const strGenre = JSON.stringify(data.genres, null, 2);
                     const strKeywords = JSON.stringify(data.keywords, null, 2);
 
-                    plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
-                    genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
-                    keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
+                    plotSummary.textContent = `${strSummary.slice(2, strSummary.length - 1)}`;
+                    genres.textContent = `${strGenre.slice(2, strGenre.length - 1)}`;
+                    keyWords.textContent = `${strKeywords.slice(2, strKeywords.length - 1)}`;
                 }
             } catch (error) {
                 console.error('Error:', error);
