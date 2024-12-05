@@ -1,12 +1,13 @@
 # app.py
 from flask import Flask, request, jsonify, send_from_directory
 from TestScript import get_row_by_index
+from query_metadata import get_metadata_title
 from flask_cors import CORS
 import pandas as pd
 
-
+#data frame used for method calls
 df = pd.DataFrame()
-df = pd.read_csv('modern_feature_films.csv')
+df = pd.read_csv('movieData.csv')
 
 app = Flask(__name__)
 CORS(app)
@@ -32,7 +33,7 @@ def get_row():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/get_movie_details', methods=['POST'])
+@app.route('/get-movie-details', methods=['POST'])
 def get_movie_details():
     try:
         # Extract the index from the request's JSON payload
@@ -44,7 +45,7 @@ def get_movie_details():
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
         # Call the function from TestScript.py
-        movieDetails = get_details_from_title(movieTitle)
+        movieDetails = get_metadata_title(movieTitle, df)
 
         if not movieDetails:
             return jsonify({"error": "Movie not found"}), 404
