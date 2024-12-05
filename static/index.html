@@ -51,7 +51,7 @@
             <!--<button type="button" id="searchBtn" onclick="validate()">Search</button>-->
         </form>
     </div>
-    <script src="script.js"></script>
+    <!--<script src="script.js"></script>-->
 </body>
 
 <script>
@@ -76,7 +76,7 @@
                 throw new Error('Network response was not ok');
             }
 
-            const data = await JSON.parse(response.json());
+            const data = await response.json();
             console.log('Response from Flask:', data);
 
             // Render the data in the HTML
@@ -89,7 +89,7 @@
                 //THIS SHOULD CAUSE A TOASTR
                 console.log("error with the data");
             } else {
-                plotSummary.textContent = `${JSON.stringify(data.plotSummary, null, 2)}`;
+                plotSummary.textContent = `${JSON.stringify(data.summary, null, 2)}`;
                 genres.textContent = `${JSON.stringify(data.genres, null, 2)}`;
                 keyWords.textContent = `${JSON.stringify(data.keywords, null, 2)}`;
             }

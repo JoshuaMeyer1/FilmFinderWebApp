@@ -51,8 +51,11 @@ def get_movie_details():
         if not movieDetails:
             return jsonify({"error": "Movie not found"}), 404
         
+
+        print("returning movie")
+
         # Return the movie details as JSON
-        return json.dumps(movieDetails)
+        return jsonify(movieDetails)
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500

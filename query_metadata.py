@@ -2,10 +2,15 @@ import pandas as pd
 
 
 def get_metadata_title(search_title, df):
+    print(f"Query for {search_title} started!")
     result = df[df['title'].str.lower() == search_title.lower()]
     
     if not result.empty:
+        print(f"Found {search_title}!")
         movie = result.iloc[0]
+
+
+        print(f"Details:  {movie['title']}, {movie['genres']}, {movie['overview']}, {movie['keywords']}!")
         return {
             "title": movie["title"],
             "genres": movie["genres"],
@@ -13,6 +18,7 @@ def get_metadata_title(search_title, df):
             "keywords": movie["keywords"],
         }
     else:
+        print(f"Failed to find {search_title}!")
         return None
     
 
