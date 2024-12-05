@@ -15,6 +15,10 @@ CORS(app)
 def home():
     return send_from_directory(directory='./static', path='index.html')
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(directory='./static', path='favicon.ico')
+
 @app.route('/get-row', methods=['POST'])
 def get_row():
     try:
