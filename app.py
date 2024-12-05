@@ -13,7 +13,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return send_from_directory(directory='./', path='index.html')
+    return send_from_directory(directory='./static', path='index.html')
 
 @app.route('/get-row', methods=['POST'])
 def get_row():
