@@ -82,7 +82,7 @@
 
             try {
                 console.log('Sending request to Flask...');
-                const response = await fetch('http://127.0.0.1:5000/get-similar-movies', {
+                const response = await fetch('/get-similar-movies', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -138,7 +138,7 @@
 
            try {
                console.log('Sending request to Flask...');
-               const response = await fetch('http://127.0.0.1:5000/get-related-movies', {
+               const response = await fetch('/get-related-movies', {
                    method: 'POST',
                    headers: {
                        'Content-Type': 'application/json',
