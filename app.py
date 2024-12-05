@@ -22,6 +22,10 @@ def home():
 def favicon():
     return send_from_directory(directory='./static', path='favicon.ico')
 
+@app.route('/search_results.html')
+def search_results():
+    return send_from_directory(directory='./static', path='search_results.html')
+
 
 
 @app.route('/get-movie-details', methods=['POST'])
