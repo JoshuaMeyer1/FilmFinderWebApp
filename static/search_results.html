@@ -15,10 +15,35 @@
     <!-- Toastr JS -->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>-->
 
-    <script>
-
-        
-
-
-    </script>
 </head>
+<body>
+    <h1>Search Results</h1>
+    <h2 id="resultMessage"></h2>
+    <ol id = "similarMovies"></ol>
+    <button type="button" id="goBackButton" onclick="backToSearch()">Start New Search</button>
+
+    <script>
+        // Function to get query parameters from the URL
+        async function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title');
+            const searchType = params.get('searchType');
+            return { title, searchType };
+        }
+
+        // Set the content of the result message
+        async function displayResults() {
+            const { title, searchType } = getQueryParams();
+            const resultMessage = `Search results for ${title} by ${searchType}: `;
+            document.getElementById('resultMessage').innerText = resultMessage;
+        }
+
+        async function backToSearch() {
+            window.location.href = `index.html`;
+        }
+
+        // Run the displayResults function when the page loads
+        window.onload = displayResults;
+    </script>
+</body>
+</html>
