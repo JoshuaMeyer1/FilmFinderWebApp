@@ -6,7 +6,6 @@ from flask_cors import CORS
 import pandas as pd
 
 #data frame used for method calls
-df = pd.DataFrame()
 df = pd.read_csv('movieData.csv')
 
 app = Flask(__name__)
