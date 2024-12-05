@@ -7,7 +7,6 @@ import pandas as pd
 import json
 
 #data frame used for method calls
-df = pd.DataFrame()
 df = pd.read_csv('movieData.csv')
 
 app = Flask(__name__)
@@ -16,6 +15,10 @@ CORS(app)
 @app.route('/')
 def home():
     return send_from_directory(directory='./static', path='index.html')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(directory='./static', path='favicon.ico')
 
 @app.route('/get-row', methods=['POST'])
 def get_row():
