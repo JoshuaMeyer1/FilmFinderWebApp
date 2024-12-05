@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmFinder</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 id="filmfinder" style="color:#653239">FilmFinder</h1>
+
+        <form>
+            <h3> Query </h3>
+            <div>
+                <label for="title"><strong>Title:</strong></label>
+                <input type="text" id="title" placeholder="Enter title">
+                <div id="titleError" class="error"></div>
+            </div>
+
+            <div>
+                <label for="searchType"><strong>SearchType</strong></label>
+                <select id="genreFilter">
+                    <option value="plotSummary">Plot Summary</option>
+                    <option value="Genre">Genre</option>
+                    <option value="keyWords">Key Words</option>
+                </select>
+            </div>
+
+            <hr style="border: 1px solid #653239; margin: 20px 0;">
+            <div>
+                <label for="plotSummaryDisp"><strong>Plot Summary:</strong></label>
+                <textarea readonly id="plotSummaryDisp" placeholder="Plot summary will display here..."></textarea>
+            </div>
+
+            
+            <div>
+                <label for="genreDisp"><strong>Genre:</strong></label>
+                <textarea readonly id="genreDisp" placeholder="Genre will display here..."></textarea>
+            </div>
+
+            
+            <div>
+                <label for="keyWordsDisp:"><strong>Key Words:</strong></label>
+                <textarea readonly id="keyWordsDisp" placeholder="Key words will display here..."></textarea>
+            </div>
+
+
+            <button type="button" onclick="validate()">Validate Title</button>
+            <button type="button" id = onclick="validate()">Search</button>
+
+
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+<script>
+
+    //Returns movie details for the queried movie
+    async function getMoveDetails() {
+
+    }
+
+    async function getRowData() {
+
+        const index = document.getElementById('indexInput').value;
+        const payload = { index: parseInt(index) };
+        console.log("testing...");
+
+        try {
+            console.log('Sending request to Flask...');
+            const response = await fetch('http://127.0.0.1:5000/get-row', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            // Check if the response is OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Response from Flask:', data);
+
+            // Render the data in the HTML
+            const resultElement = document.getElementById('result');
+            if (data.error) {
+                resultElement.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').textContent =
+                'An error occurred while fetching the data.';
+        }
+    }
+    </script>
+
+</html>
+<!--
+<body>
+    <h1>Flask & JavaScript Interaction</h1>
+
+    <label for="indexInput">Enter Row Index:</label>
+    <input type="number" id="indexInput" placeholder="Enter index" />
+    <button onclick="getRowData()">Get Row</button>
+
+    <h3>Result:</h3>
+    <div id="result"></div>
+
+    <script>
+    async function getRowData() {
+
+        const index = document.getElementById('indexInput').value;
+        const payload = { index: parseInt(index) };
+        console.log("testing...");
+
+        try {
+            console.log('Sending request to Flask...');
+            const response = await fetch('http://127.0.0.1:5000/get-row', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            // Check if the response is OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log('Response from Flask:', data);
+
+            // Render the data in the HTML
+            const resultElement = document.getElementById('result');
+            if (data.error) {
+                resultElement.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').textContent =
+                'An error occurred while fetching the data.';
+        }
+    }
+    </script>
+</body>
+</html>
+-->

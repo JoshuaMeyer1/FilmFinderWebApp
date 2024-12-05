@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the CSV file into a DataFrame
-file_path = "test_data.csv"
+file_path = "static/test_data.csv"
 df = pd.read_csv(file_path, encoding='ISO-8859-1')
 
 # Function to get a row by index
