@@ -94,22 +94,3 @@ if __name__ == '__main__':
     app.run(debug=True)
     #app.run(debug=True, host='0.0.0.0')
 
-
-'''
-@app.route('/get-row', methods=['POST'])
-def get_row():
-    try:
-        # Extract the index from the request's JSON payload
-        data = request.get_json()
-        index = data.get('index')
-
-        if index is None or not isinstance(index, int):
-            return jsonify({"error": "Invalid index. Please provide an integer."}), 400
-
-        # Call the function from TestScript.py
-        row = get_row_by_index(index)
-
-        return jsonify({"row": row})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-'''

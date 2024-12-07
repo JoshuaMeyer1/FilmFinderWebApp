@@ -1,11 +1,17 @@
-Run app.py
+INSTRUCTIONS FOR USE:
+1. You must have movie_pickle.pkl in the same directory as this file. It includes both movie information and the required vectors for finding similar movies. 
+This is the drive link for it: https://drive.google.com/file/d/1-DYeF2MsXQ_hgA5yf3SBO93U6ZsZEkc_/view?usp=drive_link
+
+2. Run app.py
  - use "python app.py"
- - run directly from vscode
+ - or run directly from vscode
 
-open in browser:
-http://127.0.0.1:8000
+3. open in browser:
+Visit the link from the terminal
 
+4. Enter a movie title into the tile entry line (not case sensitive)
 
+5. press "validate title" to verify/get general info about the movie title. This can help to check if the movie exists within the database
 
-or get vscode liveServer extension
-right-click index.html and click liveServer
+6. press search to display similar movies (this can be done before validate title, but it is recommended to validate the title first).
+

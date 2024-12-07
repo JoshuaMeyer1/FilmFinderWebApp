@@ -1,3 +1,4 @@
+/*@Author Shreeya Chugh for css*/
 h1 {
     text-align: center;
 }
@@ -48,8 +49,6 @@ background-color: #ffe9e9;
 color: #000;
 box-sizing: border-box;
 }
-
-
 
 input[type="text"]:focus, select:focus {
 border-color: #653239;
