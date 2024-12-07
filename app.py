@@ -25,31 +25,29 @@ def favicon():
 def search_results():
     return send_from_directory(directory='./static', path='search_results.html')
 
-
-
 @app.route('/get-movie-details', methods=['POST'])
 def get_movie_details():
     print("this ran")
     try:
         # Extract the index from the request's JSON payload
         data = request.get_json()
-        movieTitle = data.get('movieTitle')
+        movie_title = data.get('movieTitle')
 
         # Validate the movie title
-        if not movieTitle or not isinstance(movieTitle, str):
+        if not movie_title or not isinstance(movie_title, str):
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
         # Call the function from TestScript.py
-        movieDetails = get_metadata_title(movieTitle, df)
+        movie_details = get_metadata_title(movie_title, df)
 
-        if not movieDetails:
+        if not movie_details:
             return jsonify({"error": "Movie not found"}), 404
         
 
         print("returning movie")
 
         # Return the movie details as JSON
-        return jsonify(movieDetails)
+        return jsonify(movie_details)
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -60,32 +58,32 @@ def get_related_movies():
     try:
         # Extract the query details from the request's JSON payload
         data = request.get_json()
-        movieTitle = data.get('movieTitle')
-        searchType = data.get('searchType')
+        movie_title = data.get('movieTitle')
+        search_type = data.get('searchType')
 
         # Validate the movie title
-        if not movieTitle or not isinstance(movieTitle, str):
+        if not movie_title or not isinstance(movie_title, str):
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
-        match searchType:
+        match search_type:
             case "plotSummary":
-                movieDetails = find_similar_movies_by_summary(movieTitle, df)
+                movie_details = find_similar_movies_by_summary(movie_title, df)
             case "genre":
-                movieDetails = find_similar_movies_by_genre(movieTitle, df)
+                movie_details = find_similar_movies_by_genre(movie_title, df)
             case "keywords":
-                movieDetails = find_similar_movies_by_keywords(movieTitle, df)
+                movie_details = find_similar_movies_by_keywords(movie_title, df)
             case _:
-                movieDetails = None
+                movie_details = None
 
         print("Made it here!!!")
-        print(movieDetails)
+        print(movie_details)
 
-        if movieDetails is None:
+        if movie_details is None:
             return jsonify({"error": "Movie not found"}), 404
         
-        movieDetails = movieDetails.to_dict(orient="records")
+        movie_details = movie_details.to_dict(orient="records")
         # Return the movie details as JSON
-        return jsonify({"status": "success", "data": movieDetails})
+        return jsonify({"status": "success", "data": movie_details})
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
