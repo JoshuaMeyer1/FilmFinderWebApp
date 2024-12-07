@@ -1,6 +1,3 @@
-import pandas as pd
-
-
 def get_metadata_title(search_title, df):
     print(f"Query for {search_title} started!")
     result = df[df['title'].str.lower() == search_title.lower()]

@@ -1,8 +1,4 @@
 from scipy.spatial.distance import euclidean
-import pandas as pd
-import sys
-import warnings
-
 
 #returns full cols of movies, movie is a string title, df pickle
 def find_similar_movies_by_genre(movie, df, k=10):

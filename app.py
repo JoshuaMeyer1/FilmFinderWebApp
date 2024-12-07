@@ -5,7 +5,6 @@ from searchClusters import find_similar_movies_by_genre, find_similar_movies_by_
 from flask_cors import CORS
 import pandas as pd
 import warnings
-import json
 
 #data frame used for method calls
 warnings.filterwarnings("ignore")
