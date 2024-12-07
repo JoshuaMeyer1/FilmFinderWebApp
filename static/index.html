@@ -161,10 +161,6 @@
                console.log('Response from Flask:', data);
 
                // Render the data in the HTML
-
-               const similarMoviesResult = document.getElementById('similarMoviesDisp');
-
-
                if (data.error) {
                    toastr.error('Issue with retrieved data', 'Error');
                    //THIS SHOULD CAUSE A TOASTR
@@ -179,7 +175,7 @@
                     
                     const result = titlesWithDistances.join("\n");
 
-
+                   const similarMoviesDisp = document.getElementById('similarMoviesDisp');
                    similarMoviesDisp.textContent = `${result}`;
 
                    resizeTextarea('similarMoviesDisp')
