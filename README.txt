@@ -1,3 +1,7 @@
+Fall 2024 Senior Project For Shuai Xu, Case Western Reserve University:
+By: Shreeya Chugh, Kieran Williams, Donovan Wu, James Xu, and Joshua Meyer
+
+
 INSTRUCTIONS FOR USE:
 1. You must have movie_pickle.pkl in the same directory as this file. It includes both movie information and the required vectors for finding similar movies. 
 This is the drive link for it: https://drive.google.com/file/d/1-DYeF2MsXQ_hgA5yf3SBO93U6ZsZEkc_/view?usp=drive_link
