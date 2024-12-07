@@ -54,7 +54,7 @@
                 // Check if the response is OK
                 if (!response.ok) {
                     toastr.error('Invalid query', 'Error');
-                    throw new Error('Network response was not ok');
+                    new Error('Network response was not ok');
 
                 }
 
