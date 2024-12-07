@@ -62,12 +62,9 @@
                 console.log('Response from Flask:', data);
 
                 // Render the data in the HTML
-
-
                 const plotSummary = document.getElementById('plotSummaryDisp');
                 const genres = document.getElementById('genresDisp');
                 const keyWords = document.getElementById('keyWordsDisp');
-
 
                 if (data.error) {
                     toastr.error('Issue with retrieved data', 'Error');
@@ -89,9 +86,9 @@
                 document.getElementById('result').textContent =
                     'An error occurred while fetching the data.';
             }
-            // Run the displayResults function when the page loads
         }
 
+        // Run the displayResults function when the page loads
         window.onload = () => {
             const params = getQueryParams()
             displayResults(params)
