@@ -67,14 +67,15 @@ def get_related_movies():
         if not movieTitle or not isinstance(movieTitle, str):
             return jsonify({"error": "Invalid title. Please provide a non-empty string."}), 400
 
-        movieDetails = None
-        # Call the function from TestScript.py
-        if (searchType == "plotSummary"):
-            movieDetails = find_similar_movies_by_summary(movieTitle, df)
-        if (searchType == "genre"):
-            movieDetails = find_similar_movies_by_genre(movieTitle, df)
-        if (searchType == "keywords"):
-            movieDetails = find_similar_movies_by_keywords(movieTitle, df)
+        match searchType:
+            case "plotSummary":
+                movieDetails = find_similar_movies_by_summary(movieTitle, df)
+            case "genre":
+                movieDetails = find_similar_movies_by_genre(movieTitle, df)
+            case "keywords":
+                movieDetails = find_similar_movies_by_keywords(movieTitle, df)
+            case _:
+                movieDetails = None
 
         print("Made it here!!!")
         print(movieDetails)
