@@ -33,6 +33,7 @@
 
         <form>
             <h3> Query </h3>
+
             <div>
                 <label for="title"><strong>Title:</strong></label>
                 <input type="text" id="title" placeholder="Enter title">
@@ -49,18 +50,17 @@
             </div>
 
             <hr style="border: 1px solid #653239; margin: 20px 0;">
+
             <div>
                 <label for="plotSummaryDisp"><strong>Plot Summary:</strong></label>
                 <textarea readonly id="plotSummaryDisp" placeholder="Plot summary will display here..."></textarea>
             </div>
 
-            
             <div>
                 <label for="genresDisp"><strong>Genre:</strong></label>
                 <textarea readonly id="genresDisp" placeholder="Genre will display here..."></textarea>
             </div>
 
-            
             <div>
                 <label for="keyWordsDisp"><strong>Key Words:</strong></label>
                 <textarea readonly id="keyWordsDisp" placeholder="Key words will display here..."></textarea>
@@ -71,11 +71,9 @@
                 <textarea readonly id="similarMoviesDisp" placeholder="Similar movies will display here..."></textarea>
             </div>
 
-
             <button type="button" id="findMovie" onclick="getMovieDetails()">Validate Title</button>
             <button type="button" id="searchBtn" onclick="getRelatedMovies()">Search</button>
         </form>
-
     </div>
     
     <script>
@@ -132,7 +130,7 @@
                 console.error('Error:', error);
                 document.getElementById('result').textContent =
                     'An error occurred while fetching the data.';
-            };
+            }
         }
 
         //Returns search results
@@ -149,13 +147,11 @@
                    body: JSON.stringify(payload),
                });
 
-
                // Check if the response is OK
                if (!response.ok) {
                    toastr.error('Invalid query', 'Error');
-                   throw new Error('Network response was not ok');
+                   new Error('Network response was not ok');
                }
-
 
                const data = await response.json();
                console.log('Response from Flask:', data);
@@ -168,12 +164,12 @@
                } else {
                    toastr.success('Movie data retrieved!', 'Success');
 
-                    const titlesWithDistances = data.data.map(movie => {
+                   const titlesWithDistances = data.data.map(movie => {
                         const distanceString = Number(movie.distance).toFixed(3); // Round to 3 decimals
                         return `${distanceString} - ${movie.title}`;
-                    });
+                   });
                     
-                    const result = titlesWithDistances.join("\n");
+                   const result = titlesWithDistances.join("\n");
 
                    const similarMoviesDisp = document.getElementById('similarMoviesDisp');
                    similarMoviesDisp.textContent = `${result}`;
@@ -184,13 +180,11 @@
                console.error('Error:', error);
                document.getElementById('result').textContent =
                    'An error occurred while fetching the data.';
-           };
+           }
        }
     </script>
 
     <script>
-        
-    
         // Resize the textarea based on its content
         function resizeTextarea(id) {
             const textarea = document.getElementById(id);
