@@ -58,15 +58,3 @@ def find_similar_movies_by_keywords(movie, df, k=10):
     similar_movies = cluster_movies.nsmallest(k, 'distance')
     
     return similar_movies[['title', 'distance']]
-
-'''
-def main():
-    warnings.filterwarnings("ignore")
-    file_name = "movie_pickle.pkl"
-    df = pd.read_pickle(file_name)
-
-
-
-if __name__ == "__main__":
-    main()
-'''

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmFinder</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <!-- Toastr CSS -->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />-->
+
+    <!-- Toastr JS -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>-->
+
+</head>
+<body>
+    <h1>Search Results</h1>
+    <h2 id="resultMessage"></h2>
+    <ol id="similarMovies"></ol>
+    <button type="button" id="goBackButton" onclick="backToSearch()">Start New Search</button>
+
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title');
+            const searchType = params.get('searchType');
+            return { title, searchType };
+        }
+
+        // Set the content of the result message
+        function displayResults(params) {
+            const { title, searchType } = params
+            document.getElementById('resultMessage').innerText = `Search results for ${title} by ${searchType}: `;
+        }
+
+        async function backToSearch() {
+            window.location.href = `index.html`;
+        }
+
+        async function getSearchResults(params) {
+            const payload = params
+            console.log("fetching movie details...");
+
+            try {
+                console.log('Sending request to Flask...');
+                const response = await fetch('/get-similar-movies', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                // Check if the response is OK
+                if (!response.ok) {
+                    toastr.error('Invalid query', 'Error');
+                    throw new Error('Network response was not ok');
+
+                }
+
+                const data = response.json();
+                console.log('Response from Flask:', data);
+
+                // Render the data in the HTML
+
+
+                const plotSummary = document.getElementById('plotSummaryDisp');
+                const genres = document.getElementById('genresDisp');
+                const keyWords = document.getElementById('keyWordsDisp');
+
+
+                if (data.error) {
+                    toastr.error('Issue with retrieved data', 'Error');
+                    //THIS SHOULD CAUSE A TOASTR
+                    console.log("error with the data");
+                } else {
+                    toastr.success('Movie data retrieved!', 'Success');
+
+                    const strSummary = JSON.stringify(data.summary, null, 2);
+                    const strGenre = JSON.stringify(data.genres, null, 2);
+                    const strKeywords = JSON.stringify(data.keywords, null, 2);
+
+                    plotSummary.textContent = `${strSummary.slice(1, strSummary.length - 1)}`;
+                    genres.textContent = `${strGenre.slice(1, strGenre.length - 1)}`;
+                    keyWords.textContent = `${strKeywords.slice(1, strKeywords.length - 1)}`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').textContent =
+                    'An error occurred while fetching the data.';
+            }
+            // Run the displayResults function when the page loads
+        }
+
+        window.onload = () => {
+            const params = getQueryParams()
+
+            displayResults(params)
+            getSearchResults(params)
+        };
+    </script>
+</body>
+</html>
